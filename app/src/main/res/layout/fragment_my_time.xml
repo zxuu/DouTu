@@ -6,11 +6,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragment.MyTimeFragment">
-
-    <Button
-        android:id="@+id/button"
+    <ImageView
+        android:layout_marginTop="@dimen/h12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/timeline_title"/>
+    <TextView
+        android:gravity="center"
+        android:layout_marginTop="@dimen/h7"
+        android:text="我的时光轴"
+        android:textColor="@color/black"
+        android:textSize="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
 
 

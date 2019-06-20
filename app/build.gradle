@@ -25,22 +25,22 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:support-v4:28.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
     // 导入短视频SDK aar，LiteAVSDK_UGC_x.x.xxxx 请自行修改为最新版本号
     implementation(name: 'LiteAVSDK_UGC_6.3.7089', ext: 'aar')
-
     implementation project(':lib_tccommon')
     implementation project(':lib_tcvideoediter')
     implementation project(':lib_tcvideojoiner')
     implementation project(':lib_tcvideorecord')
-
     implementation 'com.github.DingMouRen:LayoutManagerGroup:643fb71c8e'
     implementation 'com.github.forvv231:EasyNavigation:1.0.3'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+
+    implementation 'com.facebook.fresco:fresco:1.3.0'
 }

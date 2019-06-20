@@ -15,17 +15,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
 import com.tencent.liteav.demo.videoediter.TCVideoEditChooseActivity;
-import com.tencent.liteav.demo.videoediter.TCVideoEditerActivity;
 import com.zxu.picturesxiangce.fragment.MainFragment;
 import com.zxu.picturesxiangce.fragment.MyCollectionFragment;
 import com.zxu.picturesxiangce.fragment.MyFragment;
 import com.zxu.picturesxiangce.fragment.MyTimeFragment;
+import com.zxu.picturesxiangce.weight.KickBackAnimator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +55,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         navigationBar = findViewById(R.id.navigationBar);
+
 
         fragments.add(new MainFragment());
         fragments.add(new MyTimeFragment());
