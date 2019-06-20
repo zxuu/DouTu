@@ -1,0 +1,5 @@
+include ':app'
+include ':lib_tcvideorecord'
+include ':lib_tcvideoediter'
+include ':lib_tcvideojoiner'
+include ':lib_tccommon'
