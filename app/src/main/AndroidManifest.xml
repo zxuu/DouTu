@@ -32,10 +32,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".avtivity.TimeDetailActivity"
-            android:theme="@style/AppTheme.Skid_1">
-
-        </activity>
+        <activity
+            android:name=".avtivity.TimeDetailActivity"
+            android:theme="@style/AppTheme.Skid_1"></activity>
+        <activity android:name=".avtivity.VideoDetailActivity"></activity>
     </application>
 
 </manifest>

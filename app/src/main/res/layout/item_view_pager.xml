@@ -29,29 +29,29 @@
         android:layout_marginRight="10dp"
         android:gravity="center_horizontal"
         >
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <!--<RelativeLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content">-->
 
-            <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_alignParentStart="true"-->
-                <!--android:layout_alignParentTop="true"-->
-                <!--android:src="@mipmap/header_icon_2"-->
-                <!--app:civ_border_color="@android:color/white"-->
-                <!--app:civ_border_width="2dp" />-->
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/circle_big_red"
-                android:src="@mipmap/add_icon"
-                android:tint="@android:color/white"
-                android:scaleType="centerInside"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
-                />
-        </RelativeLayout>
+            <!--&lt;!&ndash;<de.hdodenhof.circleimageview.CircleImageView&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="50dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="50dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_alignParentStart="true"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_alignParentTop="true"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:src="@mipmap/header_icon_2"&ndash;&gt;-->
+                <!--&lt;!&ndash;app:civ_border_color="@android:color/white"&ndash;&gt;-->
+                <!--&lt;!&ndash;app:civ_border_width="2dp" />&ndash;&gt;-->
+            <!--<ImageView-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:background="@drawable/circle_big_red"-->
+                <!--android:src="@mipmap/add_icon"-->
+                <!--android:tint="@android:color/white"-->
+                <!--android:scaleType="centerInside"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_marginTop="40dp"-->
+                <!--/>-->
+        <!--</RelativeLayout>-->
 
         <TextView
             android:layout_width="50dp"
@@ -72,11 +72,12 @@
             android:gravity="center"
             />
         <TextView
+            android:id="@+id/video_detail_tv"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:drawableTop="@mipmap/share_icon"
+            android:drawableTop="@mipmap/detail"
             android:layout_marginTop="16dp"
-            android:text="1.6w"
+            android:text="详情"
             android:textColor="@android:color/white"
             android:gravity="center"
             />

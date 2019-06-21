@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity{
                 .fragmentList(fragments)
                 .fragmentManager(getSupportFragmentManager())
                 .addLayoutRule(EasyNavigationBar.RULE_BOTTOM)
-
                 .addLayoutHeight(60)
                 .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
