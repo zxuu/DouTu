@@ -3,21 +3,52 @@
     android:orientation="vertical"
     android:gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="New Text"
-            android:textColor="@color/colorAccent"
-            android:id="@+id/Itemtitle" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="50dp"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:src="@mipmap/point"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <View
+
+                            android:layout_width="3dp"
+                            android:background="@color/colorAccent"
+                            android:layout_height="match_parent"/>
 
 
-        <ImageView
-            android:id="@+id/time_list_view_video"
-            android:layout_marginTop="@dimen/h10"
-            android:layout_width="300dp"
-            android:layout_height="300dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20dp"
+                            android:text="New Text"
+                            android:textColor="@color/colorAccent"
+                            android:id="@+id/Itemtitle" />
+
+
+                        <ImageView
+                            android:id="@+id/time_list_view_video"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                </LinearLayout>
+        </LinearLayout>
 
 </LinearLayout>

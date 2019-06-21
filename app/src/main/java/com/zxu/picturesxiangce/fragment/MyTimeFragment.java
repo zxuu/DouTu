@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 
 import com.zxu.picturesxiangce.R;
 import com.zxu.picturesxiangce.adapter.TimeViewAdapter;
-import com.zxu.picturesxiangce.weight.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,13 +58,13 @@ public class MyTimeFragment extends Fragment {
         //使用线性布局
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         Rv.setLayoutManager(layoutManager);
-        Rv.setHasFixedSize(true);
+        //Rv.setHasFixedSize(true);
 
         //用自定义分割线类设置分割线
-        Rv.addItemDecoration(new DividerItemDecoration(getContext()));
+        //Rv.addItemDecoration(new DividerItemDecoration(getContext()));
 
         //为ListView绑定适配器
-        myAdapter = new TimeViewAdapter(getContext(),listItem);
+        myAdapter = new TimeViewAdapter(listItem);
         Rv.setAdapter(myAdapter);
     }
 

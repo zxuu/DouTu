@@ -134,7 +134,7 @@ public class MainFragment extends Fragment {
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
-        private int[] imgs = {R.mipmap.img_video_1,R.mipmap.img_video_2};
+        private int[] imgs = {R.mipmap.luoli,R.mipmap.luoli};
         private int[] videos = {R.raw.video_2,R.raw.video_11};
         public MyAdapter(){
         }
@@ -148,7 +148,7 @@ public class MainFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.img_thumb.setImageResource(imgs[position%2]);
+            //holder.img_thumb.setImageResource(imgs[position%2]);
             holder.videoView.setVideoURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/"+ videos[position%2]));
         }
 
