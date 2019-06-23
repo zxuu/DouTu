@@ -59,8 +59,41 @@
                     android:layout_height="wrap_content">
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="60dp">
-
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                        <LinearLayout
+                            android:layout_width="190dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_marginLeft="@dimen/h5"
+                                android:textSize="20dp"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:text="黄小磊"
+                                android:textStyle="bold"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_marginTop="3dp"
+                                android:layout_marginLeft="@dimen/h5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="时光清浅，岁月留香"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <Button
+                                android:layout_marginLeft="65dp"
+                                android:layout_width="90dp"
+                                android:layout_height="20dp"
+                                android:background="@drawable/btn_shape"
+                                android:text="关注"
+                                android:textSize="15dp"
+                                android:textColor="@color/white"/>
+                        </LinearLayout>
                     </LinearLayout>
                     <com.flyco.tablayout.SlidingTabLayout
                         android:id="@+id/tl_10"
@@ -69,7 +102,8 @@
                         android:background="#20ffffff"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
-                        android:layout_gravity="center"/>
+                        android:gravity="center"
+                        app:tl_textSelectColor="@color/colorAccent"/>
                     <android.support.v4.view.ViewPager
                         android:id="@+id/vp"
                         android:layout_width="match_parent"
