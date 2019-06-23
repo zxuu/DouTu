@@ -3,7 +3,11 @@ package com.zxu.picturesxiangce;
 import android.app.Application;
 import android.util.Log;
 
+//import com.assionhonty.lib.assninegridview.AssNineGridView;
+import com.assionhonty.lib.assninegridview.AssNineGridView;
 import com.tencent.ugc.TXUGCBase;
+import com.zxu.picturesxiangce.weight.GlideImageLoader;
+//import com.zxu.picturesxiangce.weight.GlideImageLoader;
 
 public class MyApplication extends Application {
 
@@ -16,8 +20,7 @@ public class MyApplication extends Application {
 
         TXUGCBase.getInstance().setLicence(this, ugcLicenceUrl, ugcKey);
 
-        String string = TXUGCBase.getInstance().getLicenceInfo(this);
-        Log.i("SDK", "string=" + string);
+        AssNineGridView.setImageLoader(new GlideImageLoader());
 
     }
 }

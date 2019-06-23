@@ -39,6 +39,7 @@ dependencies {
     implementation project(':lib_tcvideoediter')
     implementation project(':lib_tcvideojoiner')
     implementation project(':lib_tcvideorecord')
+    implementation project(':lib_assninegridview')
     implementation 'com.github.DingMouRen:LayoutManagerGroup:643fb71c8e'
     implementation 'com.github.forvv231:EasyNavigation:1.0.3'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
@@ -57,7 +58,11 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.3.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
-    implementation 'de.hdodenhof:circleimageview:1.3.0'
+
 
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    //九宫格
+    //implementation 'com.github.assion:AssNineGridView:v1.0.2'
+
+    //implementation 'com.github.bumptech.glide:glide:4.8.0'
 }

@@ -32,10 +32,8 @@ public class VideoDetailActivity extends AppCompatActivity implements OnTabSelec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_detail);
 
-            mFragments.add(new videoFragment());
-            mFragments.add(new PhotoFragment());
-
-
+        mFragments.add(new PhotoFragment());
+        mFragments.add(new videoFragment());
 
         View decorView = getWindow().getDecorView();
         ViewPager vp = ViewFindUtils.find(decorView, R.id.vp);

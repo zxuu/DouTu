@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PicturesXiangCe.iml" filepath="$PROJECT_DIR$/PicturesXiangCe.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_assninegridview/lib_assninegridview.iml" filepath="$PROJECT_DIR$/lib_assninegridview/lib_assninegridview.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib_tccommon/lib_tccommon.iml" filepath="$PROJECT_DIR$/lib_tccommon/lib_tccommon.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib_tcvideoediter/lib_tcvideoediter.iml" filepath="$PROJECT_DIR$/lib_tcvideoediter/lib_tcvideoediter.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib_tcvideojoiner/lib_tcvideojoiner.iml" filepath="$PROJECT_DIR$/lib_tcvideojoiner/lib_tcvideojoiner.iml" />
