@@ -14,6 +14,8 @@ import com.zxu.picturesxiangce.R;
 import java.io.File;
 import java.io.IOException;
 
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
+
 public class TimeDetailActivity extends AppCompatActivity {
     VideoView videoView;
 
@@ -25,17 +27,24 @@ public class TimeDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
 
-        videoView = findViewById(R.id.time_detail_vv);
+        videoView = (VideoView) findViewById(R.id.time_detail_vv);
 
         MediaController mediaController = new MediaController(this);
         videoView.setMediaController(mediaController);
-        videoView.setVideoURI(Uri.parse(intent.getStringExtra("videoUrl")));
+        videoView.setVideoURI(Uri.parse("http://192.168.0.12:8080/hailang.mp4"));
         videoView.start();
+//        videoView.setUp("http://192.168.0.12:8080/hailang.mp4", JCVideoPlayerStandard.SCREEN_WINDOW_FULLSCREEN);
+
     }
 
     @Override
     public void finish() {
         super.finish();
-        videoView.stopPlayback();
+        videoView.pause();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }

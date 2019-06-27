@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.zxu.picturesxiangce.weight.FullScreenVideoView
-        android:id="@+id/video_view"
+        android:id="@+id/video_view_v"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false"

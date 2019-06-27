@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -15,12 +19,34 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.dingmouren.layoutmanagergroup.viewpager.OnViewPagerListener;
 import com.dingmouren.layoutmanagergroup.viewpager.ViewPagerLayoutManager;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
 import com.zxu.picturesxiangce.R;
 import com.zxu.picturesxiangce.avtivity.VideoDetailActivity;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.HttpStatus;
+import cz.msebera.android.httpclient.client.methods.CloseableHttpResponse;
+import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.entity.ContentType;
+import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
+import cz.msebera.android.httpclient.entity.mime.content.FileBody;
+import cz.msebera.android.httpclient.entity.mime.content.StringBody;
+import cz.msebera.android.httpclient.impl.client.CloseableHttpClient;
+import cz.msebera.android.httpclient.impl.client.HttpClients;
+import cz.msebera.android.httpclient.util.EntityUtils;
 
 
 /**
@@ -32,24 +58,46 @@ public class MainFragment extends Fragment {
     private MyAdapter mAdapter;
     private ViewPagerLayoutManager mLayoutManager;
 
+    List<String> list = new ArrayList<>();
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    List<String> stringList = (List<String>) msg.obj;
+//                    Toast.makeText(getContext(), stringList.get(1), Toast.LENGTH_SHORT).show();
+
+                    mLayoutManager = new ViewPagerLayoutManager(getContext(), OrientationHelper.VERTICAL);
+                    mAdapter = new MyAdapter(stringList);
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+                    mRecyclerView.setAdapter(mAdapter);
+
+                    initListener();
+                    break;
+            }
+        }
+    };
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getVideos();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         initView(view);
-
-        initListener();
+//        initListener();
         return view;
     }
     private void initView(View view) {
-        mRecyclerView = view.findViewById(R.id.recycler);
+        mRecyclerView = view.findViewById(R.id.recycler);mLayoutManager = new ViewPagerLayoutManager(getContext(), OrientationHelper.VERTICAL);
+//        mAdapter = new MyAdapter(list);
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+//        mRecyclerView.setAdapter(mAdapter);
 
-        mLayoutManager = new ViewPagerLayoutManager(getContext(), OrientationHelper.VERTICAL);
-        mAdapter = new MyAdapter();
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void initListener(){
@@ -82,7 +130,7 @@ public class MainFragment extends Fragment {
 
     private void playVideo(int position) {
         View itemView = mRecyclerView.getChildAt(0);
-        final VideoView videoView = itemView.findViewById(R.id.video_view);
+        final VideoView videoView = itemView.findViewById(R.id.video_view_v);
         final ImageView imgPlay = itemView.findViewById(R.id.img_play);
         final ImageView imgThumb = itemView.findViewById(R.id.img_thumb);
         final RelativeLayout rootView = itemView.findViewById(R.id.root_view);
@@ -128,7 +176,7 @@ public class MainFragment extends Fragment {
 
     private void releaseVideo(int index){
         View itemView = mRecyclerView.getChildAt(index);
-        final VideoView videoView = itemView.findViewById(R.id.video_view);
+        final VideoView videoView = itemView.findViewById(R.id.video_view_v);
         final ImageView imgThumb = itemView.findViewById(R.id.img_thumb);
         final ImageView imgPlay = itemView.findViewById(R.id.img_play);
         videoView.stopPlayback();
@@ -139,7 +187,9 @@ public class MainFragment extends Fragment {
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
         //private int[] imgs = {R.mipmap.luoli,R.mipmap.luoli};
         private int[] videos = {R.raw.video_2,R.raw.video_11};
-        public MyAdapter(){
+        private List<String> videoUrlList;
+        public MyAdapter(List<String> videoUrlList){
+            this.videoUrlList = videoUrlList;
         }
 
 
@@ -158,12 +208,14 @@ public class MainFragment extends Fragment {
                     v.getContext().startActivity(new Intent(getContext(),VideoDetailActivity.class));
                 }
             });
-            holder.videoView.setVideoURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/"+ videos[position%2]));
+//            holder.videoView.setVideoURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/"+ videos[position%2]));
+
+            holder.videoView.setVideoURI(Uri.parse(videoUrlList.get(position%videoUrlList.size())));
         }
 
         @Override
         public int getItemCount() {
-            return 20;
+            return videoUrlList.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder{
@@ -175,7 +227,7 @@ public class MainFragment extends Fragment {
             public ViewHolder(View itemView) {
                 super(itemView);
                 img_thumb = itemView.findViewById(R.id.img_thumb);
-                videoView = itemView.findViewById(R.id.video_view);
+                videoView = itemView.findViewById(R.id.video_view_v);
                 img_play = itemView.findViewById(R.id.img_play);
                 rootView = itemView.findViewById(R.id.root_view);
                 video_detail_tv = itemView.findViewById(R.id.video_detail_tv);
@@ -183,4 +235,68 @@ public class MainFragment extends Fragment {
         }
     }
 
+    private void getVideos(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                get();
+            }
+        }).start();
+    }
+
+    private void get() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        HttpPost httpPost = new HttpPost("http://192.168.0.12:8000/getVideos/");
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/pada.mp4";
+        FileBody bin = new FileBody(new File(path));
+
+        StringBody myName = new StringBody("zxu", ContentType.TEXT_PLAIN);
+        HttpEntity reqEntity = MultipartEntityBuilder.create().addPart("myName", myName).build();
+
+        httpPost.setEntity(reqEntity);
+        try {
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+            HttpEntity resEntity = response.getEntity();
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            if (statusCode == HttpStatus.SC_OK) {
+                JSONObject jsonpObject = JSON.parseObject(EntityUtils.toString(resEntity));
+                list = JSON.parseArray(jsonpObject.get("result").toString(),String.class);
+
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = list;
+                mHandler.sendMessage(msg);
+//                System.out.println("服务器正常返回的数据: " + EntityUtils.toString(resEntity));// httpclient自带的工具类读取返回数据
+
+//                System.out.println(resEntity.getContent());
+
+            } else if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+//                Toast.makeText(this, "上传文件发生异常，请检查服务端异常问题", Toast.LENGTH_SHORT).show();
+//                System.out.println("上传文件发生异常，请检查服务端异常问题");
+            }
+            EntityUtils.consume(resEntity);
+            response.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            httpClient.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        try {
+//            params.put("method","_POST");
+//            params.put("image",file);
+//            client.post("http://10.0.116.20:8000/haha/", params, new MyTextListener(handler, 3, 30));
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+
+    }
 }

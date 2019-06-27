@@ -1,14 +1,9 @@
 package com.zxu.picturesxiangce;
 
 import android.app.Application;
-import android.util.Log;
-import android.widget.Toast;
-
-//import com.assionhonty.lib.assninegridview.AssNineGridView;
 import com.assionhonty.lib.assninegridview.AssNineGridView;
 import com.tencent.ugc.TXUGCBase;
 import com.zxu.picturesxiangce.weight.GlideImageLoader;
-//import com.zxu.picturesxiangce.weight.GlideImageLoader;
 
 public class MyApplication extends Application {
 
