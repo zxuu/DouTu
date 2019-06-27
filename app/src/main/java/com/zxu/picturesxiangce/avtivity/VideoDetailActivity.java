@@ -23,7 +23,7 @@ public class VideoDetailActivity extends AppCompatActivity implements OnTabSelec
     private Context mContext = this;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private final String[] mTitles = {
-            "视频相册", "相册"
+            "相册","视频相册"
     };
     private MyPagerAdapter mAdapter;
 

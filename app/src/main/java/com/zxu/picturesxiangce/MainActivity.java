@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity{
 
 
     //仿微博图片和文字集合
-    private int[] menuIconItems = {R.mipmap.pic1, R.mipmap.pic2, R.mipmap.pic3, R.mipmap.pic4};
-    private String[] menuTextItems = {"文字", "拍摄", "相册", "直播"};
+    private int[] menuIconItems = {R.mipmap.pic2, R.mipmap.pic3};
+    private String[] menuTextItems = {"拍摄", "相册"};
 
     private LinearLayout menuLayout;
     private View cancelImageView;
@@ -98,12 +98,12 @@ public class MainActivity extends AppCompatActivity{
                 closeAnimation();
             }
         });
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 2; i++) {
             View itemView = View.inflate(MainActivity.this, R.layout.item_icon, null);
             ImageView menuImage = itemView.findViewById(R.id.menu_icon_iv);
             TextView menuText = itemView.findViewById(R.id.menu_text_tv);
 
-            if (i == 2) {
+            if (i == 1) {
                 menuImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="沈阳:    雨  21度"
+        android:text="太原:    雨  21度"
         android:textSize="14sp"
         android:textColor="#666666"
         android:layout_marginLeft="10dp"

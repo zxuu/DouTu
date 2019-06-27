@@ -1,13 +1,6 @@
 package com.zxu.picturesxiangce.bean;
 
 import java.util.List;
-
-/**
- * @author assionhonty
- * Created on 2018/9/19 12:03.
- * Email：assionhonty@126.com
- * Function:
- */
 public class DemoBean {
 
     private List<String> images;
