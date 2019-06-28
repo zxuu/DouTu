@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import com.zxu.picturesxiangce.Context;
 import com.zxu.picturesxiangce.R;
 
 import java.io.File;
@@ -24,16 +25,12 @@ public class TimeDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_detail);
 
-        Intent intent = getIntent();
-
-
         videoView = (VideoView) findViewById(R.id.time_detail_vv);
 
         MediaController mediaController = new MediaController(this);
         videoView.setMediaController(mediaController);
-        videoView.setVideoURI(Uri.parse("http://192.168.0.12:8080/hailang.mp4"));
+        videoView.setVideoURI(Uri.parse(Context.NGINXSERVER+"pada.mp4"));
         videoView.start();
-//        videoView.setUp("http://192.168.0.12:8080/hailang.mp4", JCVideoPlayerStandard.SCREEN_WINDOW_FULLSCREEN);
 
     }
 

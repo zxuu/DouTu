@@ -24,10 +24,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".avtivity.Test"></activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.Skid_1"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Skid_1">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,9 +37,20 @@
         </activity>
         <activity
             android:name=".avtivity.TimeDetailActivity"
-            android:theme="@style/AppTheme.Skid_1"></activity>
-        <activity android:name=".avtivity.VideoDetailActivity"
-            android:theme="@style/AppTheme.Skid_1"></activity>
+            android:theme="@style/AppTheme.Skid_1" />
+        <activity
+            android:name=".avtivity.VideoDetailActivity"
+            android:theme="@style/AppTheme.Skid_1" />
+
+        <activity android:name=".avtivity.TCVideoPreviewActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.tencent.liteav.demo.videopreview" />
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

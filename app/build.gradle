@@ -60,5 +60,8 @@ dependencies {
     implementation files('libs/mysql-connector-java-5.1.39-bin.jar')
     implementation files('libs/android-async-http-1.4.9.jar')
     //视频播放
-    compile 'fm.jiecao:jiecaovideoplayer:4.6.3'
+    implementation 'fm.jiecao:jiecaovideoplayer:4.6.3'
+    //点赞
+    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
+
 }

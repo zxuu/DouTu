@@ -4,6 +4,7 @@
     android:orientation="vertical">
 
     <FrameLayout
+        android:background="@color/black"
         android:id="@+id/video_settings_bar"
         android:layout_width="match_parent"
         android:layout_height="41dp">
@@ -56,6 +57,7 @@
     </FrameLayout>
 
     <LinearLayout
+        android:background="@color/black"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:orientation="horizontal">
@@ -67,7 +69,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="视频"
-            android:textColor="@color/text_select_color" />
+            android:textColor="@color/pink" />
 
         <TextView
             android:id="@+id/tv_item_two"
@@ -76,7 +78,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="图片"
-            android:textColor="@color/text_select_color" />
+            android:textColor="@color/pink" />
 
     </LinearLayout>
 

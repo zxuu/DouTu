@@ -22,5 +22,10 @@
 
     </style>
 
+    <style name="MyDialogFragmentStyle">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+    </style>
 
 </resources>

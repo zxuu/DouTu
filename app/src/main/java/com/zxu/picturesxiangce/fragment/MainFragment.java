@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,8 +27,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dingmouren.layoutmanagergroup.viewpager.OnViewPagerListener;
 import com.dingmouren.layoutmanagergroup.viewpager.ViewPagerLayoutManager;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
+import com.zxu.picturesxiangce.Context;
 import com.zxu.picturesxiangce.R;
 import com.zxu.picturesxiangce.avtivity.VideoDetailActivity;
 
@@ -89,14 +93,10 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         initView(view);
-//        initListener();
         return view;
     }
     private void initView(View view) {
         mRecyclerView = view.findViewById(R.id.recycler);mLayoutManager = new ViewPagerLayoutManager(getContext(), OrientationHelper.VERTICAL);
-//        mAdapter = new MyAdapter(list);
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-//        mRecyclerView.setAdapter(mAdapter);
 
     }
 
@@ -200,7 +200,7 @@ public class MainFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
             //holder.img_thumb.setImageResource(imgs[position%2]);
             holder.video_detail_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -208,6 +208,24 @@ public class MainFragment extends Fragment {
                     v.getContext().startActivity(new Intent(getContext(),VideoDetailActivity.class));
                 }
             });
+            holder.comment_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showBottomSheetDialog();
+                }
+            });
+            holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+//                    Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+
+                }
+            });
+
 //            holder.videoView.setVideoURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/"+ videos[position%2]));
 
             holder.videoView.setVideoURI(Uri.parse(videoUrlList.get(position%videoUrlList.size())));
@@ -224,6 +242,8 @@ public class MainFragment extends Fragment {
             ImageView img_play;
             RelativeLayout rootView;
             TextView video_detail_tv;
+            TextView comment_tv;
+            LikeButton likeButton;
             public ViewHolder(View itemView) {
                 super(itemView);
                 img_thumb = itemView.findViewById(R.id.img_thumb);
@@ -231,6 +251,8 @@ public class MainFragment extends Fragment {
                 img_play = itemView.findViewById(R.id.img_play);
                 rootView = itemView.findViewById(R.id.root_view);
                 video_detail_tv = itemView.findViewById(R.id.video_detail_tv);
+                comment_tv = itemView.findViewById(R.id.comment_tv);
+                likeButton = itemView.findViewById(R.id.heart_button);
             }
         }
     }
@@ -245,16 +267,16 @@ public class MainFragment extends Fragment {
     }
 
     private void get() {
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        HttpPost httpPost = new HttpPost("http://192.168.0.12:8000/getVideos/");
+        HttpPost httpPost = new HttpPost(Context.DJANGOSERVER+Context.GETVIDEOS);
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/pada.mp4";
         FileBody bin = new FileBody(new File(path));
 
         StringBody myName = new StringBody("zxu", ContentType.TEXT_PLAIN);
-        HttpEntity reqEntity = MultipartEntityBuilder.create().addPart("myName", myName).build();
+        HttpEntity reqEntity = MultipartEntityBuilder.create()
+                .addPart("myName", myName)
+                .build();
 
         httpPost.setEntity(reqEntity);
         try {
@@ -271,12 +293,9 @@ public class MainFragment extends Fragment {
                 msg.obj = list;
                 mHandler.sendMessage(msg);
 //                System.out.println("服务器正常返回的数据: " + EntityUtils.toString(resEntity));// httpclient自带的工具类读取返回数据
-
 //                System.out.println(resEntity.getContent());
-
             } else if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
 //                Toast.makeText(this, "上传文件发生异常，请检查服务端异常问题", Toast.LENGTH_SHORT).show();
-//                System.out.println("上传文件发生异常，请检查服务端异常问题");
             }
             EntityUtils.consume(resEntity);
             response.close();
@@ -289,14 +308,11 @@ public class MainFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
-//        try {
-//            params.put("method","_POST");
-//            params.put("image",file);
-//            client.post("http://10.0.116.20:8000/haha/", params, new MyTextListener(handler, 3, 30));
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-
+    private void showBottomSheetDialog() {
+        BottomSheetFragment fragment = BottomSheetFragment.newInstance();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragment.show(fragmentManager,BottomSheetFragment.class.getSimpleName());
     }
 }

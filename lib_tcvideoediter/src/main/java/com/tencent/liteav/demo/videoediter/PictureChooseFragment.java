@@ -21,6 +21,7 @@ import com.tencent.liteav.demo.ugccommon.TCVideoEditerListAdapter;
 import com.tencent.liteav.demo.ugccommon.TCVideoEditerMgr;
 import com.tencent.liteav.demo.ugccommon.TCVideoFileInfo;
 
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -102,17 +103,18 @@ public class PictureChooseFragment extends Fragment implements View.OnClickListe
             Toast.makeText(getActivity(), "必须选择三个以上图片", Toast.LENGTH_SHORT).show();
             return;
         }
-        ArrayList picturePathList = new ArrayList();
+//        TemImgUtil.imgPathList
+//        ArrayList picturePathList = new ArrayList();
         for (TCVideoFileInfo info : pictureList) {
             File file = new File(info.getFilePath());
             if (!file.exists()) {
                 TCVideoEditUtil.showErrorDialog(getActivity(), "选择的文件不存在");
                 return;
             }
-            picturePathList.add(info.getFilePath());
+            TemImgUtil.imgPathList.add(info.getFilePath());
         }
         intent.putExtra(TCConstants.INTENT_KEY_MULTI_PIC_CHOOSE, true);
-        intent.putStringArrayListExtra(TCConstants.INTENT_KEY_MULTI_PIC_LIST, picturePathList);
+        intent.putStringArrayListExtra(TCConstants.INTENT_KEY_MULTI_PIC_LIST, TemImgUtil.imgPathList);
         startActivity(intent);
         getActivity().finish();
     }

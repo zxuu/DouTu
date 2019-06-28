@@ -1,6 +1,7 @@
 package com.zxu.picturesxiangce.avtivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -8,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.flyco.tablayout.SlidingTabLayout;
@@ -26,11 +28,21 @@ public class VideoDetailActivity extends AppCompatActivity implements OnTabSelec
             "相册","视频相册"
     };
     private MyPagerAdapter mAdapter;
+    private ImageView touXing_iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_detail);
+
+        initView();
+
+        findViewById(R.id.guanzhu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(VideoDetailActivity.this,Test.class));
+            }
+        });
 
         mFragments.add(new PhotoFragment());
         mFragments.add(new videoFragment());
@@ -44,6 +56,11 @@ public class VideoDetailActivity extends AppCompatActivity implements OnTabSelec
         SlidingTabLayout tabLayout_10 = ViewFindUtils.find(decorView, R.id.tl_10);
         tabLayout_10.setViewPager(vp);
         vp.setCurrentItem(0);
+    }
+
+    private void initView(){
+        touXing_iv = (ImageView)findViewById(R.id.touxiang);
+        touXing_iv.setImageResource(R.mipmap.image_avatar_5);
     }
 
     @Override
