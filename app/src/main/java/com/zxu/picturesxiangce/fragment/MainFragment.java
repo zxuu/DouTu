@@ -29,11 +29,10 @@ import com.dingmouren.layoutmanagergroup.viewpager.OnViewPagerListener;
 import com.dingmouren.layoutmanagergroup.viewpager.ViewPagerLayoutManager;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
-import com.zxu.picturesxiangce.Context;
+import com.zxu.picturesxiangce.MyContext;
 import com.zxu.picturesxiangce.R;
 import com.zxu.picturesxiangce.avtivity.VideoDetailActivity;
+import com.zxu.picturesxiangce.bean.Video;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,17 +61,17 @@ public class MainFragment extends Fragment {
     private MyAdapter mAdapter;
     private ViewPagerLayoutManager mLayoutManager;
 
-    List<String> list = new ArrayList<>();
+    List<Video> list = new ArrayList<>();
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    List<String> stringList = (List<String>) msg.obj;
-//                    Toast.makeText(getContext(), stringList.get(1), Toast.LENGTH_SHORT).show();
+                    List<Video> videoList = (List<Video>) msg.obj;
+                    Toast.makeText(getContext(), videoList.get(1).getUrl_video(), Toast.LENGTH_SHORT).show();
 
                     mLayoutManager = new ViewPagerLayoutManager(getContext(), OrientationHelper.VERTICAL);
-                    mAdapter = new MyAdapter(stringList);
+                    mAdapter = new MyAdapter(videoList);
                     mRecyclerView.setLayoutManager(mLayoutManager);
                     mRecyclerView.setAdapter(mAdapter);
 
@@ -96,7 +95,8 @@ public class MainFragment extends Fragment {
         return view;
     }
     private void initView(View view) {
-        mRecyclerView = view.findViewById(R.id.recycler);mLayoutManager = new ViewPagerLayoutManager(getContext(), OrientationHelper.VERTICAL);
+        mRecyclerView = view.findViewById(R.id.recycler);
+        mLayoutManager = new ViewPagerLayoutManager(getContext(), OrientationHelper.VERTICAL);
 
     }
 
@@ -187,9 +187,9 @@ public class MainFragment extends Fragment {
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
         //private int[] imgs = {R.mipmap.luoli,R.mipmap.luoli};
         private int[] videos = {R.raw.video_2,R.raw.video_11};
-        private List<String> videoUrlList;
-        public MyAdapter(List<String> videoUrlList){
-            this.videoUrlList = videoUrlList;
+        private List<Video> videoList;
+        public MyAdapter(List<Video> videoUrlList){
+            this.videoList = videoUrlList;
         }
 
 
@@ -228,12 +228,12 @@ public class MainFragment extends Fragment {
 
 //            holder.videoView.setVideoURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/"+ videos[position%2]));
 
-            holder.videoView.setVideoURI(Uri.parse(videoUrlList.get(position%videoUrlList.size())));
+            holder.videoView.setVideoURI(Uri.parse(videoList.get(position%videoList.size()).getUrl_video()));
         }
 
         @Override
         public int getItemCount() {
-            return videoUrlList.size();
+            return videoList.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder{
@@ -267,17 +267,12 @@ public class MainFragment extends Fragment {
     }
 
     private void get() {
-        HttpPost httpPost = new HttpPost(Context.DJANGOSERVER+Context.GETVIDEOS);
+        HttpPost httpPost = new HttpPost(MyContext.DJANGOSERVER+ MyContext.GETVIDEOS);
         CloseableHttpClient httpClient = HttpClients.createDefault();
-
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/pada.mp4";
-        FileBody bin = new FileBody(new File(path));
-
         StringBody myName = new StringBody("zxu", ContentType.TEXT_PLAIN);
         HttpEntity reqEntity = MultipartEntityBuilder.create()
                 .addPart("myName", myName)
                 .build();
-
         httpPost.setEntity(reqEntity);
         try {
             CloseableHttpResponse response = httpClient.execute(httpPost);
@@ -286,8 +281,7 @@ public class MainFragment extends Fragment {
 
             if (statusCode == HttpStatus.SC_OK) {
                 JSONObject jsonpObject = JSON.parseObject(EntityUtils.toString(resEntity));
-                list = JSON.parseArray(jsonpObject.get("result").toString(),String.class);
-
+                list = JSON.parseArray(jsonpObject.get("result").toString(),Video.class);
                 Message msg = new Message();
                 msg.what = 1;
                 msg.obj = list;
@@ -309,6 +303,7 @@ public class MainFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
 
     private void showBottomSheetDialog() {
         BottomSheetFragment fragment = BottomSheetFragment.newInstance();

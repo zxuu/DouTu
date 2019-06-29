@@ -17,7 +17,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.support.v7.widget.OrientationHelper;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -28,31 +27,24 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
-import com.dingmouren.layoutmanagergroup.viewpager.ViewPagerLayoutManager;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
 import com.tencent.liteav.demo.common.utils.FileUtils;
 import com.tencent.liteav.demo.common.utils.TCConstants;
 //import com.tencent.liteav.demo.videoupload.TXUGCPublish;
 //import com.tencent.liteav.demo.videoupload.TXUGCPublishTypeDef;
+import com.tencent.liteav.demo.videoediter.TemImgUtil;
 import com.tencent.rtmp.ITXVodPlayListener;
 import com.tencent.rtmp.TXLiveConstants;
-import com.tencent.rtmp.TXLog;
 import com.tencent.rtmp.TXVodPlayConfig;
 import com.tencent.rtmp.TXVodPlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
-import com.zxu.picturesxiangce.Context;
+import com.zxu.picturesxiangce.MyContext;
 import com.zxu.picturesxiangce.R;
-import com.zxu.picturesxiangce.fragment.MainFragment;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Locale;
 
 import cz.msebera.android.httpclient.HttpEntity;
@@ -426,30 +418,40 @@ public class TCVideoPreviewActivity extends Activity implements View.OnClickList
     }
 
     private void uploadVideo() {
-        HttpPost httpPost = new HttpPost(Context.DJANGOSERVER+Context.UPLOADVIDEO);
+        HttpPost httpPost = new HttpPost(MyContext.DJANGOSERVER+ MyContext.UPLOADFILE);
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
 //        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/pada.mp4";
         FileBody upLoadVideo = new FileBody(new File(mVideoPath));
 
         StringBody myName = new StringBody("zxu", ContentType.TEXT_PLAIN);
-        HttpEntity reqEntity = MultipartEntityBuilder.create()
-                .addPart("file",upLoadVideo)
-                .addPart("myName", myName)
-                .build();
 
-        httpPost.setEntity(reqEntity);
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        for (String imgPath : TemImgUtil.imgPathList) {
+            FileBody fileBody = new FileBody(new File(imgPath));
+            builder.addPart("files",fileBody);
+        }
+        builder.addPart("files", upLoadVideo);
+        builder.addPart("myName", myName);
+        HttpEntity httpEntity = builder.build();
+
+//        HttpEntity reqEntity = MultipartEntityBuilder.create()
+//                .addPart("file",upLoadVideo)
+//                .addPart("myName", myName)
+//                .build();
+
+        httpPost.setEntity(httpEntity);
         try {
             CloseableHttpResponse response = httpClient.execute(httpPost);
             HttpEntity resEntity = response.getEntity();
             int statusCode = response.getStatusLine().getStatusCode();
             Message msg = new Message();
             if (statusCode == HttpStatus.SC_OK) {
-                JSONObject jsonpObject = JSON.parseObject(EntityUtils.toString(resEntity));
-                String result = (String) jsonpObject.get("result");
-                msg.what = 0;
-                msg.obj = result;
-                mHandler.sendMessage(msg);
+//                JSONObject jsonpObject = JSON.parseObject(EntityUtils.toString(resEntity));
+//                String result = (String) jsonpObject.get("result");
+//                msg.what = 0;
+//                msg.obj = result;
+//                mHandler.sendMessage(msg);
 //              System.out.println(resEntity.getContent());
 
             } else if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {

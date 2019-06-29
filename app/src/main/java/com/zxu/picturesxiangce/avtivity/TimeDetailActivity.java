@@ -1,21 +1,13 @@
 package com.zxu.picturesxiangce.avtivity;
 
-import android.content.Intent;
-import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
-import com.zxu.picturesxiangce.Context;
+import com.zxu.picturesxiangce.MyContext;
 import com.zxu.picturesxiangce.R;
-
-import java.io.File;
-import java.io.IOException;
-
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
 public class TimeDetailActivity extends AppCompatActivity {
     VideoView videoView;
@@ -29,7 +21,7 @@ public class TimeDetailActivity extends AppCompatActivity {
 
         MediaController mediaController = new MediaController(this);
         videoView.setMediaController(mediaController);
-        videoView.setVideoURI(Uri.parse(Context.NGINXSERVER+"pada.mp4"));
+        videoView.setVideoURI(Uri.parse(MyContext.NGINXSERVER+"pada.mp4"));
         videoView.start();
 
     }

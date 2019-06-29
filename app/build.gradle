@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.github.DingMouRen:LayoutManagerGroup:643fb71c8e'
     implementation 'com.github.forvv231:EasyNavigation:1.0.3'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
-    implementation 'com.facebook.fresco:fresco:1.3.0'
+//    implementation 'com.facebook.fresco:fresco:1.3.0'
     ////////////////////////////////////////////////
     implementation 'com.android.support:palette-v7:28.0.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
@@ -63,5 +63,7 @@ dependencies {
     implementation 'fm.jiecao:jiecaovideoplayer:4.6.3'
     //点赞
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
+    //网络加载
+    compile 'com.wang.avi:library:2.1.3'
 
 }

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.zxu.picturesxiangce.R;
@@ -29,6 +30,7 @@ public class VideoDetailActivity extends AppCompatActivity implements OnTabSelec
     };
     private MyPagerAdapter mAdapter;
     private ImageView touXing_iv;
+    private ImageView user_bg_iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +61,14 @@ public class VideoDetailActivity extends AppCompatActivity implements OnTabSelec
     }
 
     private void initView(){
-        touXing_iv = (ImageView)findViewById(R.id.touxiang);
-        touXing_iv.setImageResource(R.mipmap.image_avatar_5);
+        touXing_iv =  findViewById(R.id.touxiang);
+        Glide.with(this)
+                .load("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1104063590,3714887348&fm=26&gp=0.jpg")
+                .into(touXing_iv);
+        user_bg_iv = (ImageView) findViewById(R.id.user_back_g_image_view);
+        Glide.with(this)
+                .load("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1104063590,3714887348&fm=26&gp=0.jpg")
+                .into(user_bg_iv);
     }
 
     @Override

@@ -25,7 +25,7 @@
             android:fitsSystemWindows="true">
 
             <ImageView
-                android:id="@+id/collocation_image_view"
+                android:id="@+id/user_back_g_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"

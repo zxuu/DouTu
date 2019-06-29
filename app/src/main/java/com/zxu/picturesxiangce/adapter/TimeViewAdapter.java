@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.zxu.picturesxiangce.R;
 import com.zxu.picturesxiangce.avtivity.TimeDetailActivity;
 
