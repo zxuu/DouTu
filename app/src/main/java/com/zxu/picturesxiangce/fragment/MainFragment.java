@@ -2,6 +2,7 @@ package com.zxu.picturesxiangce.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,12 +12,15 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,13 +29,19 @@ import android.widget.VideoView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.dingmouren.layoutmanagergroup.viewpager.OnViewPagerListener;
 import com.dingmouren.layoutmanagergroup.viewpager.ViewPagerLayoutManager;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
+import com.qintong.library.InsLoadingView;
 import com.zxu.picturesxiangce.MyContext;
 import com.zxu.picturesxiangce.R;
+import com.zxu.picturesxiangce.adapter.MainAdapter;
+import com.zxu.picturesxiangce.avtivity.PhotosGalleryActivity;
 import com.zxu.picturesxiangce.avtivity.VideoDetailActivity;
+import com.zxu.picturesxiangce.bean.User;
 import com.zxu.picturesxiangce.bean.Video;
 
 import java.io.File;
@@ -51,27 +61,24 @@ import cz.msebera.android.httpclient.impl.client.CloseableHttpClient;
 import cz.msebera.android.httpclient.impl.client.HttpClients;
 import cz.msebera.android.httpclient.util.EntityUtils;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class MainFragment extends Fragment {
     private static final String TAG = "MainFragment";
     private RecyclerView mRecyclerView;
     private MyAdapter mAdapter;
     private ViewPagerLayoutManager mLayoutManager;
+    User me = new User();
 
     List<Video> list = new ArrayList<>();
+    List<User> userslist = new ArrayList<>();
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
                     List<Video> videoList = (List<Video>) msg.obj;
-                    Toast.makeText(getContext(), videoList.get(1).getUrl_video(), Toast.LENGTH_SHORT).show();
-
                     mLayoutManager = new ViewPagerLayoutManager(getContext(), OrientationHelper.VERTICAL);
                     mAdapter = new MyAdapter(videoList);
+//                    Toast.makeText(getContext(), me.getName(), Toast.LENGTH_SHORT).show();
                     mRecyclerView.setLayoutManager(mLayoutManager);
                     mRecyclerView.setAdapter(mAdapter);
 
@@ -186,34 +193,79 @@ public class MainFragment extends Fragment {
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
         //private int[] imgs = {R.mipmap.luoli,R.mipmap.luoli};
-        private int[] videos = {R.raw.video_2,R.raw.video_11};
-        private List<Video> videoList;
+        private List<Video> mVideoList;
         public MyAdapter(List<Video> videoUrlList){
-            this.videoList = videoUrlList;
+            this.mVideoList = videoUrlList;
+//            this.me = me;
         }
-
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_pager,parent,false);
-            return new ViewHolder(view);
+            ViewHolder viewHolder = new ViewHolder(view);
+            return viewHolder;
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            //holder.img_thumb.setImageResource(imgs[position%2]);
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
+
+            for (int i = 0; i < userslist.size(); i++) {
+                if (mVideoList.get(position).getUser_name().equals(userslist.get(i).getName())) {
+                    User realUserr = userslist.get(i);
+                    holder.declaration_tv.setText(realUserr.getDeclaration());
+                    Glide.with(getContext())
+                            .load(realUserr.getBack_img_url())
+                            .asBitmap()
+                            .centerCrop()
+                            .into(new BitmapImageViewTarget(holder.loadingView){
+                                @Override
+                                protected void setResource(Bitmap resource) {
+                                    RoundedBitmapDrawable circularBitmapDrawable =
+                                            RoundedBitmapDrawableFactory.create(getResources(), resource);
+                                    circularBitmapDrawable.setCircular(true);
+                                    holder.loadingView.setImageDrawable(circularBitmapDrawable);
+                                }
+                            });
+
+                    break;
+                }
+            }
+
+            holder.loadingView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (int i = 0; i < userslist.size(); i++) {
+                        if (mVideoList.get(position).getUser_name().equals(userslist.get(i).getName())) {
+                            Intent intent = new Intent(getContext(),VideoDetailActivity.class);
+//                            intent.putExtra("name", userslist.get(i).getName());
+//                            intent.putExtra("tel", userslist.get(i).getTel());
+//                            intent.putExtra("gender", userslist.get(i).getGender());
+//                            intent.putExtra("declaration", userslist.get(i).getDeclaration());
+//                            intent.putExtra("back_img_url", userslist.get(i).getBack_img_url());
+                            intent.putExtra("user", userslist.get(i));
+                            startActivity(intent);
+                            break;
+                        }
+                    }
+                }
+            });
             holder.video_detail_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    v.getContext().startActivity(new Intent(getContext(),VideoDetailActivity.class));
+                    Intent intent = new Intent(v.getContext(),PhotosGalleryActivity.class);
+                    intent.putExtra("videoId", mVideoList.get(position).getId_video());
+                    v.getContext().startActivity(intent);
                 }
             });
-            holder.comment_tv.setOnClickListener(new View.OnClickListener() {
+
+            holder.comment_num_tv.setText(mVideoList.get(position).getHeart_num());
+            holder.comment_num_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showBottomSheetDialog();
                 }
             });
+            holder.heart_num_tv.setText(mVideoList.get(position).getHeart_num());
             holder.likeButton.setOnLikeListener(new OnLikeListener() {
                 @Override
                 public void liked(LikeButton likeButton) {
@@ -226,14 +278,15 @@ public class MainFragment extends Fragment {
                 }
             });
 
-//            holder.videoView.setVideoURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/"+ videos[position%2]));
+            holder.user_name_tv.setText(mVideoList.get(position).getUser_name());
 
-            holder.videoView.setVideoURI(Uri.parse(videoList.get(position%videoList.size()).getUrl_video()));
+//            holder.videoView.setVideoURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/"+ videos[position%2]));
+            holder.videoView.setVideoURI(Uri.parse(mVideoList.get(position%mVideoList.size()).getUrl_video()));
         }
 
         @Override
         public int getItemCount() {
-            return videoList.size();
+            return mVideoList.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder{
@@ -242,8 +295,13 @@ public class MainFragment extends Fragment {
             ImageView img_play;
             RelativeLayout rootView;
             TextView video_detail_tv;
-            TextView comment_tv;
+            TextView comment_num_tv;
+            TextView heart_num_tv;
             LikeButton likeButton;
+            TextView declaration_tv;
+            InsLoadingView loadingView;
+            TextView user_name_tv;
+            Button guan_zhu_btn;
             public ViewHolder(View itemView) {
                 super(itemView);
                 img_thumb = itemView.findViewById(R.id.img_thumb);
@@ -251,8 +309,13 @@ public class MainFragment extends Fragment {
                 img_play = itemView.findViewById(R.id.img_play);
                 rootView = itemView.findViewById(R.id.root_view);
                 video_detail_tv = itemView.findViewById(R.id.video_detail_tv);
-                comment_tv = itemView.findViewById(R.id.comment_tv);
+                comment_num_tv = itemView.findViewById(R.id.comment_num);
+                heart_num_tv = itemView.findViewById(R.id.heart_num);
                 likeButton = itemView.findViewById(R.id.heart_button);
+                loadingView = itemView.findViewById(R.id.loading_view);
+                user_name_tv = itemView.findViewById(R.id.user_name);
+                guan_zhu_btn = itemView.findViewById(R.id.guan_zhu_btn);
+                declaration_tv = itemView.findViewById(R.id.declaration_tv);
             }
         }
     }
@@ -282,6 +345,8 @@ public class MainFragment extends Fragment {
             if (statusCode == HttpStatus.SC_OK) {
                 JSONObject jsonpObject = JSON.parseObject(EntityUtils.toString(resEntity));
                 list = JSON.parseArray(jsonpObject.get("result").toString(),Video.class);
+                me = JSON.parseObject(jsonpObject.get("me").toString(), User.class);
+                userslist = JSON.parseArray(jsonpObject.get("users").toString(),User.class);
                 Message msg = new Message();
                 msg.what = 1;
                 msg.obj = list;
@@ -304,10 +369,11 @@ public class MainFragment extends Fragment {
         }
     }
 
-
     private void showBottomSheetDialog() {
         BottomSheetFragment fragment = BottomSheetFragment.newInstance();
         FragmentManager fragmentManager = getFragmentManager();
         fragment.show(fragmentManager,BottomSheetFragment.class.getSimpleName());
     }
+
+
 }

@@ -7,6 +7,7 @@ public class MyContext {
     public static final String NGINXSERVER = IP+"8080/";
 
     public static final String GETVIDEOS = "getVideos/";
+    public static final String GETUSER = "getUser/";
     public static final String GETIMAGES = "getImages/";
 
     public static final String UPLOADIAMGE = "uploadImage/";

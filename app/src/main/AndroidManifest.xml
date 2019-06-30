@@ -24,7 +24,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".avtivity.Test"></activity>
+        <activity android:name=".avtivity.PhotosGalleryActivity"></activity>
+        <activity android:name=".avtivity.Test" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
@@ -41,8 +42,8 @@
         <activity
             android:name=".avtivity.VideoDetailActivity"
             android:theme="@style/AppTheme.Skid_1" />
-
-        <activity android:name=".avtivity.TCVideoPreviewActivity"
+        <activity
+            android:name=".avtivity.TCVideoPreviewActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.tencent.liteav.demo.videopreview" />
