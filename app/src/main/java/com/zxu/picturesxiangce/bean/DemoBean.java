@@ -2,6 +2,7 @@ package com.zxu.picturesxiangce.bean;
 
 import java.util.List;
 public class DemoBean {
+    private String timeTile;
 
     private List<String> images;
 
@@ -13,4 +14,11 @@ public class DemoBean {
         this.images = images;
     }
 
+    public String getTimeTile() {
+        return timeTile;
+    }
+
+    public void setTimeTile(String timeTile) {
+        this.timeTile = timeTile;
+    }
 }

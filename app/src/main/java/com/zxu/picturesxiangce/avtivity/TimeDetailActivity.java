@@ -9,19 +9,23 @@ import android.widget.VideoView;
 import com.zxu.picturesxiangce.MyContext;
 import com.zxu.picturesxiangce.R;
 
+import java.net.URI;
+
 public class TimeDetailActivity extends AppCompatActivity {
     VideoView videoView;
+    String videoUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_detail);
 
-        videoView = (VideoView) findViewById(R.id.time_detail_vv);
 
+        videoView = (VideoView) findViewById(R.id.time_detail_vv);
+        videoUrl = getIntent().getStringExtra("videoUrl");
         MediaController mediaController = new MediaController(this);
         videoView.setMediaController(mediaController);
-        videoView.setVideoURI(Uri.parse(MyContext.NGINXSERVER+"pada.mp4"));
+        videoView.setVideoURI(Uri.parse(videoUrl));
         videoView.start();
 
     }

@@ -38,15 +38,17 @@ import com.like.OnLikeListener;
 import com.qintong.library.InsLoadingView;
 import com.zxu.picturesxiangce.MyContext;
 import com.zxu.picturesxiangce.R;
-import com.zxu.picturesxiangce.adapter.MainAdapter;
-import com.zxu.picturesxiangce.avtivity.PhotosGalleryActivity;
+
 import com.zxu.picturesxiangce.avtivity.VideoDetailActivity;
+import com.zxu.picturesxiangce.bean.Image;
 import com.zxu.picturesxiangce.bean.User;
 import com.zxu.picturesxiangce.bean.Video;
+import com.zxu.picturesxiangce.gallery.GalleryActivity;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cz.msebera.android.httpclient.HttpEntity;
@@ -231,17 +233,13 @@ public class MainFragment extends Fragment {
                 }
             }
 
+            //点击头像跳到用户详情页
             holder.loadingView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     for (int i = 0; i < userslist.size(); i++) {
                         if (mVideoList.get(position).getUser_name().equals(userslist.get(i).getName())) {
                             Intent intent = new Intent(getContext(),VideoDetailActivity.class);
-//                            intent.putExtra("name", userslist.get(i).getName());
-//                            intent.putExtra("tel", userslist.get(i).getTel());
-//                            intent.putExtra("gender", userslist.get(i).getGender());
-//                            intent.putExtra("declaration", userslist.get(i).getDeclaration());
-//                            intent.putExtra("back_img_url", userslist.get(i).getBack_img_url());
                             intent.putExtra("user", userslist.get(i));
                             startActivity(intent);
                             break;
@@ -249,12 +247,27 @@ public class MainFragment extends Fragment {
                     }
                 }
             });
+            //点击跳到视频详情页(对应的图片)
             holder.video_detail_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(),PhotosGalleryActivity.class);
-                    intent.putExtra("videoId", mVideoList.get(position).getId_video());
-                    v.getContext().startActivity(intent);
+                public void onClick(final View v) {
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<Image> imageList = getImages(mVideoList.get(position).getId_video());
+                            ArrayList<String> images = new ArrayList<>();
+                            for (int i = 0; i < imageList.size(); i++) {
+                                images.add(imageList.get(i).getUrl_image());
+                            }
+                            Log.i(TAG, "run: ---------------------->" + images.get(1));
+                            Intent intent = new Intent(v.getContext(), GalleryActivity.class);
+                            intent.putStringArrayListExtra("imagesUrl", images);
+                            v.getContext().startActivity(intent);
+                        }
+                    }).start();
+
+
                 }
             });
 
@@ -367,6 +380,43 @@ public class MainFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private List<Image> getImages(String videoId){
+        List<Image> imageList = new ArrayList<>();
+        HttpPost httpPost = new HttpPost(MyContext.DJANGOSERVER+ MyContext.GETVIDEOIMAGES);
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        StringBody myName = new StringBody(videoId, ContentType.TEXT_PLAIN);
+        HttpEntity reqEntity = MultipartEntityBuilder.create()
+                .addPart("videoId", myName)
+                .build();
+        httpPost.setEntity(reqEntity);
+        try {
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+            HttpEntity resEntity = response.getEntity();
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            if (statusCode == HttpStatus.SC_OK) {
+                JSONObject jsonpObject = JSON.parseObject(EntityUtils.toString(resEntity));
+                imageList = JSON.parseArray(jsonpObject.get("videoImages").toString(),Image.class);
+                return imageList;
+//                System.out.println("服务器正常返回的数据: " + EntityUtils.toString(resEntity));// httpclient自带的工具类读取返回数据
+//                System.out.println(resEntity.getContent());
+            } else if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+//                Toast.makeText(this, "上传文件发生异常，请检查服务端异常问题", Toast.LENGTH_SHORT).show();
+            }
+            EntityUtils.consume(resEntity);
+            response.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            httpClient.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void showBottomSheetDialog() {

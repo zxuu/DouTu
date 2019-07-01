@@ -14,27 +14,50 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv"
-            android:textSize="20dp"
-            android:textColor="@color/colorAccent"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="30dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="center"
+                android:src="@mipmap/point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <View
+                android:layout_gravity="center"
+                android:layout_width="3dp"
+                android:background="@color/colorAccent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="5dp"/>
+            android:orientation="vertical"
+            android:layout_marginLeft="5dp">
 
-        <com.assionhonty.lib.assninegridview.AssNineGridView
-            android:id="@+id/angv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            app:angv_gridSpace="3dp"
-            app:angv_maxSize="9"
-            app:angv_singleImgRatio="1" />
+            <TextView
+                android:id="@+id/tv"
+                android:textSize="20dp"
+                android:textColor="@color/colorAccent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="5dp"/>
+
+            <com.assionhonty.lib.assninegridview.AssNineGridView
+                android:id="@+id/angv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                app:angv_gridSpace="3dp"
+                app:angv_maxSize="9"
+                app:angv_singleImgRatio="1" />
+        </LinearLayout>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

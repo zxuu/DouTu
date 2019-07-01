@@ -53,11 +53,11 @@ public class VideoDetailActivity extends AppCompatActivity implements OnTabSelec
         setContentView(R.layout.activity_video_detail);
 
         Intent intent = getIntent();
-        name = intent.getStringExtra("name");
-        tel = intent.getStringExtra("tel");
-        gender = intent.getStringExtra("gender");
-        declaration = intent.getStringExtra("declaration");
-        back_img_url = intent.getStringExtra("back_img_url");
+//        name = intent.getStringExtra("name");
+//        tel = intent.getStringExtra("tel");
+//        gender = intent.getStringExtra("gender");
+//        declaration = intent.getStringExtra("declaration");
+//        back_img_url = intent.getStringExtra("back_img_url");
 
         me = (User) intent.getSerializableExtra("user");
         initView();

@@ -24,6 +24,7 @@ import com.zxu.picturesxiangce.fragment.MainFragment;
 import com.zxu.picturesxiangce.fragment.MyCollectionFragment;
 import com.zxu.picturesxiangce.fragment.MyFragment;
 import com.zxu.picturesxiangce.fragment.MyTimeFragment;
+import com.zxu.picturesxiangce.fragment.UserDetail.PhotoFragment;
 import com.zxu.picturesxiangce.weight.KickBackAnimator;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity{
     private EasyNavigationBar navigationBar;
 
-    private String[] tabText = {"首页", "时光", "", "收藏", "我的"};
+    private String[] tabText = {"首页", "时光", "", "关注", "我的"};
     //未选中icon
     private int[] normalIcon = {R.mipmap.index, R.mipmap.find, R.mipmap.add_image, R.mipmap.message, R.mipmap.me};
     //选中时icon
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity{
 
 
         fragments.add(new MainFragment());
-        fragments.add(new MyTimeFragment());
+        fragments.add(new PhotoFragment());
         fragments.add(new MyCollectionFragment());
         fragments.add(new MyFragment());
 
