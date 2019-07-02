@@ -8,6 +8,15 @@ public class User implements Serializable {
     private String gender;
     private String declaration;
     private String back_img_url;
+    private String pass_word;
+
+    public String getPass_word() {
+        return pass_word;
+    }
+
+    public void setPass_word(String pass_word) {
+        this.pass_word = pass_word;
+    }
 
     public String getName() {
         return name;

@@ -1,8 +1,14 @@
 package com.zxu.picturesxiangce;
 
 import android.app.Application;
+import android.content.Context;
+import android.widget.ImageView;
+
 import com.assionhonty.lib.assninegridview.AssNineGridView;
+import com.bumptech.glide.Glide;
 import com.tencent.ugc.TXUGCBase;
+import com.yuyh.library.imgsel.ISNav;
+import com.yuyh.library.imgsel.common.ImageLoader;
 import com.zxu.picturesxiangce.weight.GlideImageLoader;
 
 public class MyApplication extends Application {
@@ -19,6 +25,13 @@ public class MyApplication extends Application {
         TXUGCBase.getInstance().setLicence(this, ugcLicenceUrl, ugcKey);
 
         AssNineGridView.setImageLoader(new GlideImageLoader());
+
+        ISNav.getInstance().init(new ImageLoader() {
+            @Override
+            public void displayImage(Context context, String path, ImageView imageView) {
+                Glide.with(context).load(path).into(imageView);
+            }
+        });
 
     }
 }

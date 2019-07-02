@@ -33,6 +33,8 @@ public class MyFragment extends Fragment implements View.OnClickListener{
     private ImageView bg_tou_img;
     private TextView myName;
     private TextView myDeclaration;
+    private LoginDailogFragment loginDailogFragment;
+    private RegisterFragment registerFragment = new RegisterFragment();
     User me = new User();
     List<String> mVideoUrlList = new ArrayList<>();
     @Override
@@ -62,6 +64,7 @@ public class MyFragment extends Fragment implements View.OnClickListener{
         bg_tou_img = view.findViewById(R.id.me_touxiang);
         myName = view.findViewById(R.id.me_name_vd_tv);
         myDeclaration = view.findViewById(R.id.me_declaration_tv);
+        view.findViewById(R.id.login_btn).setOnClickListener(this);
 
         Glide.with(this)
                 .load(me.getBack_img_url())
@@ -86,11 +89,15 @@ public class MyFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.my_like_view:
-
-                break;
+//            case R.id.my_like_view:
+//
+//                break;
             case R.id.my_info_view:
 
+                break;
+            case R.id.login_btn:
+                loginDailogFragment = new LoginDailogFragment();
+                loginDailogFragment.show(getFragmentManager(),"login");
                 break;
         }
     }

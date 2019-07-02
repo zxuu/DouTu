@@ -356,7 +356,7 @@ public class TCVideoPreviewActivity extends Activity implements View.OnClickList
 
                 ContentValues values = initCommonContentValues(newFile);
                 values.put(MediaStore.Video.VideoColumns.DATE_TAKEN, System.currentTimeMillis());
-                values.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
+                values.put(MediaStore.MediaColumns.MIME_TYPE, "login/mp4");
                 values.put(MediaStore.Video.VideoColumns.DURATION, mVideoDuration);//时长
                 this.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
 

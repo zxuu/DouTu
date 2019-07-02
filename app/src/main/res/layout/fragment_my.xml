@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/me_bg_iv"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="170dp"
         android:scaleType="centerCrop"
         app:layout_collapseMode="parallax"
         android:fitsSystemWindows="true"/>
@@ -84,36 +84,36 @@
 
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/my_like_view"
-            android:orientation="horizontal">
-            <ImageView
-                android:src="@mipmap/my_like"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"/>
-            <TextView
-                android:text="我的喜欢"
-                android:gravity="center_vertical"
-                android:textSize="15dp"
-                android:paddingLeft="40dp"
-                android:textColor="@color/white"
-                android:layout_width="140dp"
-                android:layout_height="match_parent" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="right">
-                <ImageView
-                    android:layout_marginRight="20dp"
-                    android:src="@mipmap/right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:id="@+id/my_like_view"-->
+            <!--android:orientation="horizontal">-->
+            <!--<ImageView-->
+                <!--android:src="@mipmap/my_like"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginLeft="10dp"/>-->
+            <!--<TextView-->
+                <!--android:text="我的喜欢"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:textSize="15dp"-->
+                <!--android:paddingLeft="40dp"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:layout_width="140dp"-->
+                <!--android:layout_height="match_parent" />-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:gravity="right">-->
+                <!--<ImageView-->
+                    <!--android:layout_marginRight="20dp"-->
+                    <!--android:src="@mipmap/right"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent" />-->
+            <!--</LinearLayout>-->
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -144,6 +144,16 @@
             </LinearLayout>
 
         </LinearLayout>
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:text="登录"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:background="@drawable/btn_shape"/>
 
     </LinearLayout>
 

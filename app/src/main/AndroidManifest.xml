@@ -24,9 +24,8 @@
         android:roundIcon="@mipmap/icon_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".avtivity.PhotosGalleryActivity">
-
-        </activity>
+        <activity android:name=".avtivity.LoginActivity"></activity>
+        <activity android:name=".avtivity.PhotosGalleryActivity" />
         <activity android:name=".avtivity.Test" />
         <activity
             android:name=".MainActivity"
@@ -54,7 +53,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".gallery.GalleryActivity"/>
+        <activity android:name=".gallery.GalleryActivity" />
     </application>
 
 </manifest>
