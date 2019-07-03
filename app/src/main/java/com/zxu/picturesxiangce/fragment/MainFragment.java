@@ -86,6 +86,11 @@ public class MainFragment extends Fragment {
 
                     initListener();
                     break;
+                case 5:
+                    if (msg.obj.equals("ok")) {
+                        Toast.makeText(getContext(), "成功关注", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
             }
         }
     };
@@ -275,7 +280,8 @@ public class MainFragment extends Fragment {
             holder.comment_num_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showBottomSheetDialog();
+                    MyContext.currentVideo = mVideoList.get(position).getId_video();
+                    showBottomSheetDialog(position);
                 }
             });
             holder.heart_num_tv.setText(mVideoList.get(position).getHeart_num());
@@ -295,6 +301,17 @@ public class MainFragment extends Fragment {
 
 //            holder.videoView.setVideoURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/"+ videos[position%2]));
             holder.videoView.setVideoURI(Uri.parse(mVideoList.get(position%mVideoList.size()).getUrl_video()));
+            holder.guan_zhu_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            putGuanZhu(mVideoList.get(position).getUser_name());
+                        }
+                    }).start();
+                }
+            });
         }
 
         @Override
@@ -419,11 +436,49 @@ public class MainFragment extends Fragment {
         return null;
     }
 
-    private void showBottomSheetDialog() {
+    private void showBottomSheetDialog(int position) {
         BottomSheetFragment fragment = BottomSheetFragment.newInstance();
         FragmentManager fragmentManager = getFragmentManager();
         fragment.show(fragmentManager,BottomSheetFragment.class.getSimpleName());
     }
 
+    private void putGuanZhu(String targetName){
+        HttpPost httpPost = new HttpPost(MyContext.DJANGOSERVER+ MyContext.PUTFOLLOW);
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        StringBody tarName = new StringBody(targetName, ContentType.TEXT_PLAIN);
+        HttpEntity reqEntity = MultipartEntityBuilder.create()
+                .addPart("myName", new StringBody(MyContext.USER,ContentType.TEXT_PLAIN))
+                .addPart("targetName", tarName)
+                .build();
+        httpPost.setEntity(reqEntity);
+        try {
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+            HttpEntity resEntity = response.getEntity();
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            if (statusCode == HttpStatus.SC_OK) {
+                JSONObject jsonpObject = JSON.parseObject(EntityUtils.toString(resEntity));
+                String result = jsonpObject.get("result").toString();
+                Message msg = new Message();
+                msg.what = 5;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
+//                System.out.println("服务器正常返回的数据: " + EntityUtils.toString(resEntity));// httpclient自带的工具类读取返回数据
+//                System.out.println(resEntity.getContent());
+            } else if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+//                Toast.makeText(this, "上传文件发生异常，请检查服务端异常问题", Toast.LENGTH_SHORT).show();
+            }
+            EntityUtils.consume(resEntity);
+            response.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            httpClient.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

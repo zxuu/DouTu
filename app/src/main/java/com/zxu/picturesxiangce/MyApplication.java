@@ -6,6 +6,8 @@ import android.widget.ImageView;
 
 import com.assionhonty.lib.assninegridview.AssNineGridView;
 import com.bumptech.glide.Glide;
+import com.downloader.PRDownloader;
+import com.downloader.PRDownloaderConfig;
 import com.tencent.ugc.TXUGCBase;
 import com.yuyh.library.imgsel.ISNav;
 import com.yuyh.library.imgsel.common.ImageLoader;
@@ -26,12 +28,12 @@ public class MyApplication extends Application {
 
         AssNineGridView.setImageLoader(new GlideImageLoader());
 
-        ISNav.getInstance().init(new ImageLoader() {
-            @Override
-            public void displayImage(Context context, String path, ImageView imageView) {
-                Glide.with(context).load(path).into(imageView);
-            }
-        });
+
+
+        PRDownloaderConfig config = PRDownloaderConfig.newBuilder()
+                .setDatabaseEnabled(true)
+                .build();
+        PRDownloader.initialize(this, config);
 
     }
 }

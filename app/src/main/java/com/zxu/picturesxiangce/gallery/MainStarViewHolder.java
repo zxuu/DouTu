@@ -28,6 +28,8 @@ public class MainStarViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.view_right)
         public View viewRight;
 
+        @BindView(R.id.download_btn)
+        public View downLoadBtn;
         public MainStarViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

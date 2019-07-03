@@ -8,12 +8,27 @@
     android:paddingTop="3dp"
     android:background="#20ffffff">
 
-    <EditText
-        android:id="@+id/speak_little"
-        android:textColor="@color/colorAccent"
-        android:hint="说点什么吧"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/speak_little"
+            android:textColor="@color/colorAccent"
+            android:hint="说点什么吧"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp" />
+        <Button
+            android:id="@+id/comment_btn"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_shape"
+            android:textColor="@color/white"
+            android:text="点评"
+            android:textSize="18dp"/>
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

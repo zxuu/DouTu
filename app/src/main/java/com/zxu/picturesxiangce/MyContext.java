@@ -11,15 +11,25 @@ public class MyContext {
     public static final String GETUSER = "getUser/";
     public static final String GETIMAGES = "getImages/";
     public static final String GETVIDEOIMAGES = "getVideoImages/";
+    //获取视频对应的评论
+    public static final String GETCOMMENTS = "getComments/";
     //获取关注的人
     public static final String GETFOLLOWS = "getFollows/";
 
     public static final String UPLOADIAMGE = "uploadImage/";
     public static final String UPLOADVIDEO = "uploadVideo/";
     public static final String UPLOADFILE = "uploadFile/";
+    //评论
+    public static final String PUTCOMMENT = "putComment/";
+    //关注
+    public static final String PUTFOLLOW = "putFollow/";
+
+
     //注册
     public static final String REGISTER = "register/";
     //登录
     public static final String SIGN = "sign/";
+
+    public static String currentVideo = "";
 
 }

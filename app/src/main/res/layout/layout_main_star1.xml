@@ -33,4 +33,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
     />
+    <Button
+        android:id="@+id/download_btn"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/tv_star_desc"
+        android:layout_width="300dp"
+        android:text="下载"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_shape"
+        android:layout_marginLeft="50dp"/>
 </RelativeLayout>

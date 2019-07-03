@@ -1,18 +1,34 @@
     package com.zxu.picturesxiangce.gallery;
 
     import android.content.Context;
+    import android.os.Environment;
     import android.support.v4.view.ViewPager;
     import android.support.v7.widget.RecyclerView;
     import android.util.DisplayMetrics;
+    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.MotionEvent;
     import android.view.View;
     import android.view.ViewGroup;
+    import android.widget.Toast;
 
+    import com.downloader.Error;
+    import com.downloader.OnCancelListener;
+    import com.downloader.OnDownloadListener;
+    import com.downloader.OnPauseListener;
+    import com.downloader.OnProgressListener;
+    import com.downloader.OnStartOrResumeListener;
+    import com.downloader.PRDownloader;
+    import com.downloader.Progress;
     import com.zxu.picturesxiangce.R;
+    import com.zxu.picturesxiangce.util.Utils;
 
+    import java.text.SimpleDateFormat;
     import java.util.ArrayList;
+    import java.util.Date;
     import java.util.List;
+
+    import static android.support.constraint.Constraints.TAG;
 
     /**
      * Created by Administrator on 2018/5/10.
@@ -26,6 +42,8 @@
         private int currentPosition;
         private int mOriginSize;
         private List<String> dataList=new ArrayList<>();
+        int downloadIdOne;
+
 
         public MainAdapter(Context context, List<String> list) {
             this.mContext=context;
@@ -39,7 +57,7 @@
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             //  所以在空白的左右两侧各填充了透明的View(StarView自定义View拦截左右方向滑动事件),用于交互,左侧View向右滑动和点击ViewPager切换
             // ,右侧View向左滑动和点击切换ViewPager,其它不做处理
             final MainStarViewHolder mainStarHolder = (MainStarViewHolder) holder;
@@ -55,6 +73,56 @@
             } else {
                 mainStarHolder.mViewPager.setPageMargin(-180);
             }
+
+//            final String dirPath = Utils.getRootDirPath(holder.itemView.getContext());
+            final String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
+            Log.i(TAG, "onBindViewHolder: "+dirPath);
+            final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
+//获取当前时间
+            final Date date = new Date(System.currentTimeMillis());
+            mainStarHolder.downLoadBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    downloadIdOne = PRDownloader.download(dataList.get(position), dirPath, simpleDateFormat.format(date)+".jpg")
+                            .build()
+                            .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                                @Override
+                                public void onStartOrResume() {
+
+                                }
+                            })
+                            .setOnPauseListener(new OnPauseListener() {
+                                @Override
+                                public void onPause() {
+
+                                }
+                            })
+                            .setOnCancelListener(new OnCancelListener() {
+                                @Override
+                                public void onCancel() {
+
+                                }
+                            })
+                            .setOnProgressListener(new OnProgressListener() {
+                                @Override
+                                public void onProgress(Progress progress) {
+                                    long progressPercent = progress.currentBytes * 100 / progress.totalBytes;
+
+                                }
+                            })
+                            .start(new OnDownloadListener() {
+                                @Override
+                                public void onDownloadComplete() {
+                                    Toast.makeText(mContext, "下载完成", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onError(Error error) {
+
+                                }
+                            });
+                }
+            });
 
             mainStarHolder.viewLeft.setOnTouchListener(new View.OnTouchListener() {
                 @Override
