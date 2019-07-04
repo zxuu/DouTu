@@ -25,6 +25,8 @@ import com.zxu.picturesxiangce.R;
 import com.zxu.picturesxiangce.bean.Comment;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import cz.msebera.android.httpclient.HttpEntity;
@@ -180,10 +182,15 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Vi
         HttpPost httpPost = new HttpPost(MyContext.DJANGOSERVER+MyContext.PUTCOMMENT);
         CloseableHttpClient httpClient = HttpClients.createDefault();
         StringBody currentVideo = new StringBody(MyContext.currentVideo, ContentType.TEXT_PLAIN);
-        HttpEntity reqEntity = MultipartEntityBuilder.create()
-                .addPart("currentVideo", currentVideo)
-                .addPart("content", new StringBody(content, ContentType.TEXT_PLAIN))
-                .build();
+        HttpEntity reqEntity = null;
+        try {
+            reqEntity = MultipartEntityBuilder.create()
+                    .addPart("currentVideo", currentVideo)
+                    .addPart("content", new StringBody(content, Charset.forName("UTF-8")))
+                    .build();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         httpPost.setEntity(reqEntity);
         try {

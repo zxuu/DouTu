@@ -33,6 +33,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.dingmouren.layoutmanagergroup.viewpager.OnViewPagerListener;
 import com.dingmouren.layoutmanagergroup.viewpager.ViewPagerLayoutManager;
+import com.downloader.Error;
+import com.downloader.OnCancelListener;
+import com.downloader.OnDownloadListener;
+import com.downloader.OnPauseListener;
+import com.downloader.OnProgressListener;
+import com.downloader.OnStartOrResumeListener;
+import com.downloader.PRDownloader;
+import com.downloader.Progress;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.qintong.library.InsLoadingView;
@@ -47,8 +55,10 @@ import com.zxu.picturesxiangce.gallery.GalleryActivity;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import cz.msebera.android.httpclient.HttpEntity;
@@ -62,6 +72,8 @@ import cz.msebera.android.httpclient.entity.mime.content.StringBody;
 import cz.msebera.android.httpclient.impl.client.CloseableHttpClient;
 import cz.msebera.android.httpclient.impl.client.HttpClients;
 import cz.msebera.android.httpclient.util.EntityUtils;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class MainFragment extends Fragment {
     private static final String TAG = "MainFragment";
@@ -86,9 +98,14 @@ public class MainFragment extends Fragment {
 
                     initListener();
                     break;
-                case 5:
+                case 2://点赞结果
+                    Toast.makeText(getContext(), msg.obj.toString(), Toast.LENGTH_SHORT).show();
+                    break;
+                case 3:
                     if (msg.obj.equals("ok")) {
                         Toast.makeText(getContext(), "成功关注", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "关注失败", Toast.LENGTH_SHORT).show();
                     }
                     break;
             }
@@ -200,6 +217,7 @@ public class MainFragment extends Fragment {
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
         //private int[] imgs = {R.mipmap.luoli,R.mipmap.luoli};
+        int downloadIdOne;
         private List<Video> mVideoList;
         public MyAdapter(List<Video> videoUrlList){
             this.mVideoList = videoUrlList;
@@ -276,7 +294,6 @@ public class MainFragment extends Fragment {
                 }
             });
 
-            holder.comment_num_tv.setText(mVideoList.get(position).getHeart_num());
             holder.comment_num_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -284,16 +301,33 @@ public class MainFragment extends Fragment {
                     showBottomSheetDialog(position);
                 }
             });
-            holder.heart_num_tv.setText(mVideoList.get(position).getHeart_num());
+            int heartNumm = mVideoList.get(position).getHeart_num();
+            holder.heart_num_tv.setText(String.valueOf(heartNumm));
             holder.likeButton.setOnLikeListener(new OnLikeListener() {
                 @Override
                 public void liked(LikeButton likeButton) {
 //                    Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
+                    mVideoList.get(position).setHeart_num(mVideoList.get(position).getHeart_num()+1);
+                    holder.heart_num_tv.setText(String.valueOf(mVideoList.get(position).getHeart_num()));
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dianZan(mVideoList.get(position).getId_video(),"1");
+                        }
+                    }).start();
+
                 }
 
                 @Override
                 public void unLiked(LikeButton likeButton) {
-
+                    mVideoList.get(position).setHeart_num(mVideoList.get(position).getHeart_num()-1);
+                    holder.heart_num_tv.setText(String.valueOf(mVideoList.get(position).getHeart_num()));
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dianZan(mVideoList.get(position).getId_video(),"2");
+                        }
+                    }).start();
                 }
             });
 
@@ -310,6 +344,54 @@ public class MainFragment extends Fragment {
                             putGuanZhu(mVideoList.get(position).getUser_name());
                         }
                     }).start();
+                }
+            });
+            holder.download.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
+                    Log.i(TAG, "onBindViewHolder: "+dirPath);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
+//获取当前时间
+                    final Date date = new Date(System.currentTimeMillis());
+                    downloadIdOne = PRDownloader.download(mVideoList.get(position).getUrl_video(), dirPath, simpleDateFormat.format(date)+".mp4")
+                            .build()
+                            .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                                @Override
+                                public void onStartOrResume() {
+
+                                }
+                            })
+                            .setOnPauseListener(new OnPauseListener() {
+                                @Override
+                                public void onPause() {
+
+                                }
+                            })
+                            .setOnCancelListener(new OnCancelListener() {
+                                @Override
+                                public void onCancel() {
+
+                                }
+                            })
+                            .setOnProgressListener(new OnProgressListener() {
+                                @Override
+                                public void onProgress(Progress progress) {
+                                    long progressPercent = progress.currentBytes * 100 / progress.totalBytes;
+
+                                }
+                            })
+                            .start(new OnDownloadListener() {
+                                @Override
+                                public void onDownloadComplete() {
+                                    Toast.makeText(getContext(), "下载完成", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onError(Error error) {
+
+                                }
+                            });
                 }
             });
         }
@@ -332,6 +414,7 @@ public class MainFragment extends Fragment {
             InsLoadingView loadingView;
             TextView user_name_tv;
             Button guan_zhu_btn;
+            ImageView download;
             public ViewHolder(View itemView) {
                 super(itemView);
                 img_thumb = itemView.findViewById(R.id.img_thumb);
@@ -346,7 +429,16 @@ public class MainFragment extends Fragment {
                 user_name_tv = itemView.findViewById(R.id.user_name);
                 guan_zhu_btn = itemView.findViewById(R.id.guan_zhu_btn);
                 declaration_tv = itemView.findViewById(R.id.declaration_tv);
+                download = itemView.findViewById(R.id.download_video);
             }
+        }
+    }
+
+    class uiRunable implements Runnable{
+
+        @Override
+        public void run() {
+
         }
     }
 
@@ -460,7 +552,7 @@ public class MainFragment extends Fragment {
                 JSONObject jsonpObject = JSON.parseObject(EntityUtils.toString(resEntity));
                 String result = jsonpObject.get("result").toString();
                 Message msg = new Message();
-                msg.what = 5;
+                msg.what = 3;
                 msg.obj = result;
                 mHandler.sendMessage(msg);
 //                System.out.println("服务器正常返回的数据: " + EntityUtils.toString(resEntity));// httpclient自带的工具类读取返回数据
@@ -481,4 +573,43 @@ public class MainFragment extends Fragment {
         }
     }
 
+    private void dianZan(String idVideo,String lablee) {
+        HttpPost httpPost = new HttpPost(MyContext.DJANGOSERVER+ MyContext.DIANZAN);
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        StringBody tarVideo = new StringBody(idVideo, ContentType.TEXT_PLAIN);
+        StringBody lable = new StringBody(lablee, ContentType.TEXT_PLAIN);
+        HttpEntity reqEntity = MultipartEntityBuilder.create()
+                .addPart("targetVideo", tarVideo)
+                .addPart("label", lable)
+                .build();
+        httpPost.setEntity(reqEntity);
+        try {
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+            HttpEntity resEntity = response.getEntity();
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            if (statusCode == HttpStatus.SC_OK) {
+                JSONObject jsonpObject = JSON.parseObject(EntityUtils.toString(resEntity));
+                String result = jsonpObject.get("result").toString();
+                Message msg = new Message();
+                msg.what = 2;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
+//                System.out.println("服务器正常返回的数据: " + EntityUtils.toString(resEntity));// httpclient自带的工具类读取返回数据
+//                System.out.println(resEntity.getContent());
+            } else if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+//                Toast.makeText(this, "上传文件发生异常，请检查服务端异常问题", Toast.LENGTH_SHORT).show();
+            }
+            EntityUtils.consume(resEntity);
+            response.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            httpClient.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

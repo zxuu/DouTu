@@ -12,6 +12,46 @@
         android:clickable="false"
         android:focusable="false"
         />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="56dp"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginRight="16dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textColor="#f2f2f2"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/download_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/download"
+            android:layout_alignParentRight="true"
+            android:tint="#f2f2f2"
+            android:layout_marginRight="16dp"
+            />
+    </RelativeLayout>
     <ImageView
         android:id="@+id/img_thumb"
         android:layout_width="match_parent"
@@ -55,7 +95,7 @@
             android:layout_height="50dp"
             android:drawableTop="@mipmap/msg_icon"
             android:layout_marginTop="13dp"
-            android:text="1.6w"
+            android:text="评论"
             android:textColor="@android:color/white"
             android:gravity="center"
             />

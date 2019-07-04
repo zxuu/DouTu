@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30dp"
-                android:text="即刻开启视界"
+                android:text="即刻开启抖图"
                 android:textSize="18sp" />
 
             <EditText

@@ -32,7 +32,7 @@ public class VideoContentAdapter extends RecyclerView.Adapter<VideoContentAdapte
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int i) {
         viewHolder.videoView.setVideoURI(Uri.parse(mVideoContentList.get(i)));
-//        viewHolder.videoView.start();
+        viewHolder.videoView.start();
         viewHolder.videoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

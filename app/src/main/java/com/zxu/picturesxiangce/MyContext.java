@@ -23,6 +23,9 @@ public class MyContext {
     public static final String PUTCOMMENT = "putComment/";
     //关注
     public static final String PUTFOLLOW = "putFollow/";
+    //点赞
+    public static final String DIANZAN = "putDianZan/";
+
 
 
     //注册

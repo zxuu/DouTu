@@ -20,7 +20,6 @@ import com.zxu.picturesxiangce.MyContext;
 import com.zxu.picturesxiangce.R;
 import com.zxu.picturesxiangce.adapter.FollowsAdapter;
 import com.zxu.picturesxiangce.bean.User;
-import com.zxu.picturesxiangce.bean.Video;
 
 import java.io.IOException;
 import java.util.ArrayList;

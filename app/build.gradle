@@ -73,5 +73,4 @@ dependencies {
     compile 'com.yuyh.imgsel:library:2.0.6'
     //下载
     implementation 'com.mindorks.android:prdownloader:0.6.0'
-
 }

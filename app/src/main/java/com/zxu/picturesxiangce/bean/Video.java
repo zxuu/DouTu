@@ -3,7 +3,7 @@ package com.zxu.picturesxiangce.bean;
 public class Video {
     private String url_video;
     private String user_name;
-    private String heart_num;
+    private int heart_num;
     private String id_video;
 
     public String getUrl_video() {
@@ -22,11 +22,11 @@ public class Video {
         this.user_name = user_name;
     }
 
-    public String getHeart_num() {
+    public int getHeart_num() {
         return heart_num;
     }
 
-    public void setHeart_num(String heart_num) {
+    public void setHeart_num(int heart_num) {
         this.heart_num = heart_num;
     }
 
