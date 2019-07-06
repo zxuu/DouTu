@@ -49,9 +49,9 @@ public class MyFragment extends Fragment implements View.OnClickListener{
         me.setDeclaration("时光清浅，岁月留香");
         me.setBack_img_url("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1104063590,3714887348&fm=26&gp=0.jpg");
 
-        mVideoUrlList.add("http://10.0.116.20:8080/TXVideo_20190629_142906.mp4");
-        mVideoUrlList.add("http://10.0.116.20:8080/TXVideo_20190701_092500.mp4");
-        mVideoUrlList.add("http://10.0.116.20:8080/TXVideo_20190629_085105.mp4");
+        mVideoUrlList.add("http://10.0.116.20:8080/TXVideo_20190705_003716.mp4");
+        mVideoUrlList.add("http://10.0.116.20:8080/TXVideo_20190705_003716.mp4");
+        mVideoUrlList.add("http://10.0.116.20:8080/TXVideo_20190705_010509.mp4");
 
         initView(view);
         initVideoContent();
@@ -103,10 +103,10 @@ public class MyFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initVideoContent(){
-        StaggeredGridLayoutManager layoutManager = new
-                StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
-        videoContentRv.setLayoutManager(layoutManager);
-        VideoContentAdapter collocationAdapter = new VideoContentAdapter(mVideoUrlList);
-        videoContentRv.setAdapter(collocationAdapter);
+//        StaggeredGridLayoutManager layoutManager = new
+//                StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
+//        videoContentRv.setLayoutManager(layoutManager);
+//        VideoContentAdapter collocationAdapter = new VideoContentAdapter(mVideoUrlList);
+//        videoContentRv.setAdapter(collocationAdapter);
     }
 }

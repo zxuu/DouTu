@@ -28,6 +28,8 @@
     import java.util.Date;
     import java.util.List;
 
+    import dmax.dialog.SpotsDialog;
+
     import static android.support.constraint.Constraints.TAG;
 
     /**
@@ -43,7 +45,7 @@
         private int mOriginSize;
         private List<String> dataList=new ArrayList<>();
         int downloadIdOne;
-
+        private SpotsDialog spotsDialog;
 
         public MainAdapter(Context context, List<String> list) {
             this.mContext=context;
@@ -57,7 +59,7 @@
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             //  所以在空白的左右两侧各填充了透明的View(StarView自定义View拦截左右方向滑动事件),用于交互,左侧View向右滑动和点击ViewPager切换
             // ,右侧View向左滑动和点击切换ViewPager,其它不做处理
             final MainStarViewHolder mainStarHolder = (MainStarViewHolder) holder;
@@ -83,6 +85,8 @@
             mainStarHolder.downLoadBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    spotsDialog = new SpotsDialog(holder.itemView.getContext(),"下载中......");
+                    spotsDialog.show();
                     downloadIdOne = PRDownloader.download(dataList.get(position), dirPath, simpleDateFormat.format(date)+".jpg")
                             .build()
                             .setOnStartOrResumeListener(new OnStartOrResumeListener() {
@@ -113,6 +117,7 @@
                             .start(new OnDownloadListener() {
                                 @Override
                                 public void onDownloadComplete() {
+                                    spotsDialog.dismiss();
                                     Toast.makeText(mContext, "下载完成", Toast.LENGTH_SHORT).show();
                                 }
 

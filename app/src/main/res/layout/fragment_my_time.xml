@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".fragment.MyTimeFragment">
+    android:layout_height="match_parent">
     <ImageView
         android:layout_marginTop="25dp"
         android:layout_width="match_parent"
@@ -14,18 +13,38 @@
     <TextView
         android:gravity="center"
         android:layout_marginTop="@dimen/h7"
-        android:text="我的时光轴"
+        android:text="记录美好时光"
         android:textColor="@color/black"
         android:textSize="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/loading_avi_my_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:indicatorColor="@color/pink"
+            app:indicatorName="加载中......"
+            style="@style/AVLoadingIndicatorView.Large"
+            />
 
 
+    </LinearLayout>
+    <com.yalantis.phoenix.PullToRefreshView
+        android:id="@+id/pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_my_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+    </com.yalantis.phoenix.PullToRefreshView>
 
 </LinearLayout>

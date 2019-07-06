@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity{
 
 
         fragments.add(new MainFragment());
-        fragments.add(new PhotoFragment());
+        fragments.add(new MyTimeFragment());
         fragments.add(new MyCollectionFragment());
         fragments.add(new MyFragment());
 

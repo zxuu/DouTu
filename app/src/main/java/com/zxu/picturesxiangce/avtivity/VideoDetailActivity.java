@@ -69,7 +69,8 @@ public class VideoDetailActivity extends AppCompatActivity implements OnTabSelec
             }
         });
 
-        mFragments.add(new PhotoFragment());
+        PhotoFragment photoFragment = PhotoFragment.newInstance(me.getName());
+        mFragments.add(photoFragment);
         mFragments.add(new videoFragment());
 
         View decorView = getWindow().getDecorView();

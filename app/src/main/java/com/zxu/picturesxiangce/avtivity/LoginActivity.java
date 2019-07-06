@@ -33,6 +33,8 @@ import com.zxu.picturesxiangce.weight.CommonVideoView;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import cz.msebera.android.httpclient.HttpEntity;
@@ -192,22 +194,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
     private void register() {
-        HttpPost httpPost = new HttpPost(MyContext.DJANGOSERVER+MyContext.SIGN);
+        HttpPost httpPost = new HttpPost(MyContext.DJANGOSERVER+MyContext.REGISTER);
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        StringBody user_Name = new StringBody(userName.getText().toString(), ContentType.TEXT_PLAIN);
+        StringBody user_Name = null;
+        try {
+            user_Name = new StringBody(userName.getText().toString(), Charset.forName("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         StringBody user_Tel = new StringBody(userTel.getText().toString(), ContentType.TEXT_PLAIN);
         StringBody user_PassW = new StringBody(userPassWord.getText().toString(), ContentType.TEXT_PLAIN);
         StringBody user_Gender = new StringBody(userGender.getText().toString(), ContentType.TEXT_PLAIN);
-        StringBody user_Dec = new StringBody(userDeclaration.getText().toString(), ContentType.TEXT_PLAIN);
+        StringBody user_Dec = null;
+        try {
+            user_Dec = new StringBody(userDeclaration.getText().toString(), Charset.forName("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         FileBody file = new FileBody(new File(path));
         HttpEntity reqEntity = MultipartEntityBuilder.create()
-                .addPart("headPortrait",file)
+                .addPart("headPortrait", file)
                 .addPart("user_Name", user_Name)
                 .addPart("user_Tel", user_Tel)
                 .addPart("user_PassW", user_PassW)
                 .addPart("user_Gender", user_Gender)
                 .addPart("user_Dec", user_Dec)
-                .addPart("category", new StringBody("0",ContentType.TEXT_PLAIN))
+                .addPart("category", new StringBody("0", ContentType.TEXT_PLAIN))
                 .build();
 
         httpPost.setEntity(reqEntity);

@@ -27,6 +27,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.tencent.liteav.demo.common.utils.FileUtils;
 import com.tencent.liteav.demo.common.utils.TCConstants;
@@ -58,6 +60,7 @@ import cz.msebera.android.httpclient.entity.mime.content.StringBody;
 import cz.msebera.android.httpclient.impl.client.CloseableHttpClient;
 import cz.msebera.android.httpclient.impl.client.HttpClients;
 import cz.msebera.android.httpclient.util.EntityUtils;
+import dmax.dialog.SpotsDialog;
 
 /**
  * 录制完成后的预览界面
@@ -93,14 +96,17 @@ public class TCVideoPreviewActivity extends Activity implements View.OnClickList
     //录制界面传过来的视频分辨率
     private int mVideoResolution;
     private Button mButtonThumbnail;
+    private SpotsDialog spotsDialog;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    spotsDialog.dismiss();
                     Toast.makeText(TCVideoPreviewActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
+                    spotsDialog.dismiss();
                     Toast.makeText(TCVideoPreviewActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -251,6 +257,8 @@ public class TCVideoPreviewActivity extends Activity implements View.OnClickList
                 }
                 break;
             case R.id.video_upload:
+                spotsDialog = new SpotsDialog(TCVideoPreviewActivity.this,"上传中.......");
+                spotsDialog.show();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -447,15 +455,16 @@ public class TCVideoPreviewActivity extends Activity implements View.OnClickList
             int statusCode = response.getStatusLine().getStatusCode();
             Message msg = new Message();
             if (statusCode == HttpStatus.SC_OK) {
-//                JSONObject jsonpObject = JSON.parseObject(EntityUtils.toString(resEntity));
-//                String result = (String) jsonpObject.get("result");
-//                msg.what = 0;
-//                msg.obj = result;
-//                mHandler.sendMessage(msg);
+                JSONObject jsonpObject = JSON.parseObject(EntityUtils.toString(resEntity));
+                String result = (String) jsonpObject.get("result");
+                msg.what = 0;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
 //              System.out.println(resEntity.getContent());
 
             } else if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                 msg.what = 1;
+                mHandler.sendMessage(msg);
 //                Toast.makeText(this, "上传文件发生异常，请检查服务端异常问题", Toast.LENGTH_SHORT).show();
 //                System.out.println("上传文件发生异常，请检查服务端异常问题");
             }

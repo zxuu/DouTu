@@ -2,7 +2,7 @@ package com.zxu.picturesxiangce;
 
 public class MyContext {
     public static final String USER = "zxu";
-    public static final String IP = "http://10.0.116.20:";
+    public static final String IP = "http://192.168.43.6:";
     //服务类型
     public static final String DJANGOSERVER = IP+"8000/";
     public static final String NGINXSERVER = IP+"8080/";
@@ -25,7 +25,8 @@ public class MyContext {
     public static final String PUTFOLLOW = "putFollow/";
     //点赞
     public static final String DIANZAN = "putDianZan/";
-
+    //删除我的时光
+    public static final String DELECTTIME = "delectMyTime/";
 
 
     //注册

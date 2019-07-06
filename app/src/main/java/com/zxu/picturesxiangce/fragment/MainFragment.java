@@ -55,6 +55,8 @@ import com.zxu.picturesxiangce.gallery.GalleryActivity;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,6 +74,7 @@ import cz.msebera.android.httpclient.entity.mime.content.StringBody;
 import cz.msebera.android.httpclient.impl.client.CloseableHttpClient;
 import cz.msebera.android.httpclient.impl.client.HttpClients;
 import cz.msebera.android.httpclient.util.EntityUtils;
+import dmax.dialog.SpotsDialog;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -80,6 +83,7 @@ public class MainFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private MyAdapter mAdapter;
     private ViewPagerLayoutManager mLayoutManager;
+    SpotsDialog spotsDialog;
     User me = new User();
 
     List<Video> list = new ArrayList<>();
@@ -128,7 +132,6 @@ public class MainFragment extends Fragment {
     private void initView(View view) {
         mRecyclerView = view.findViewById(R.id.recycler);
         mLayoutManager = new ViewPagerLayoutManager(getContext(), OrientationHelper.VERTICAL);
-
     }
 
     private void initListener(){
@@ -283,7 +286,7 @@ public class MainFragment extends Fragment {
                             for (int i = 0; i < imageList.size(); i++) {
                                 images.add(imageList.get(i).getUrl_image());
                             }
-                            Log.i(TAG, "run: ---------------------->" + images.get(1));
+//                            Log.i(TAG, "run: ---------------------->" + images.get(1));
                             Intent intent = new Intent(v.getContext(), GalleryActivity.class);
                             intent.putStringArrayListExtra("imagesUrl", images);
                             v.getContext().startActivity(intent);
@@ -349,10 +352,11 @@ public class MainFragment extends Fragment {
             holder.download.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    spotsDialog = new SpotsDialog(getContext(),"下载中......");
+                    spotsDialog.show();
                     final String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
                     Log.i(TAG, "onBindViewHolder: "+dirPath);
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
-//获取当前时间
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
                     final Date date = new Date(System.currentTimeMillis());
                     downloadIdOne = PRDownloader.download(mVideoList.get(position).getUrl_video(), dirPath, simpleDateFormat.format(date)+".mp4")
                             .build()
@@ -384,6 +388,7 @@ public class MainFragment extends Fragment {
                             .start(new OnDownloadListener() {
                                 @Override
                                 public void onDownloadComplete() {
+                                    spotsDialog.dismiss();
                                     Toast.makeText(getContext(), "下载完成", Toast.LENGTH_SHORT).show();
                                 }
 
@@ -415,6 +420,7 @@ public class MainFragment extends Fragment {
             TextView user_name_tv;
             Button guan_zhu_btn;
             ImageView download;
+
             public ViewHolder(View itemView) {
                 super(itemView);
                 img_thumb = itemView.findViewById(R.id.img_thumb);
@@ -537,9 +543,16 @@ public class MainFragment extends Fragment {
     private void putGuanZhu(String targetName){
         HttpPost httpPost = new HttpPost(MyContext.DJANGOSERVER+ MyContext.PUTFOLLOW);
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        StringBody tarName = new StringBody(targetName, ContentType.TEXT_PLAIN);
+        StringBody tarName = null;
+        StringBody myName = null;
+        try {
+            tarName = new StringBody(targetName, Charset.forName("UTF-8"));
+            myName = new StringBody(MyContext.USER, Charset.forName("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         HttpEntity reqEntity = MultipartEntityBuilder.create()
-                .addPart("myName", new StringBody(MyContext.USER,ContentType.TEXT_PLAIN))
+                .addPart("myName", myName )
                 .addPart("targetName", tarName)
                 .build();
         httpPost.setEntity(reqEntity);
