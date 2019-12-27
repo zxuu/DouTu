@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public boolean onTabClickEvent(View view, int position) {
                         if (position == 2) {
-                            //跳转页面（全民K歌）   或者   弹出菜单（微博）
+                            //弹出菜单
                             showMunu();
                         }
                         return false;
